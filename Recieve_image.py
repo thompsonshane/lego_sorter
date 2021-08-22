@@ -2,7 +2,7 @@ import socket               # Import socket module
 
 counter = 0
 s = socket.socket()         # Create a socket object
-host = "192.168.1.7" # Get local machine name
+host = socket.gethostname()        # Get local machine name
 port = 12345                # Reserve a port for your service.
 print (host)                # I wanted to see the hostname
 s.bind((host, port))        # Bind to the port
@@ -13,7 +13,7 @@ while True:
     c, addr = s.accept()     # Establish connection with client.
     print ('Got connection from', addr)
     print ("Receiving...")
-    f = open('image' + str(counter)+ '.jpg', 'wb')
+    f = open('datasets/from_pi/brick_' + str(counter) + '.jpg', 'wb')
     l = c.recv(1024)
     while l:
         f.write(l)
