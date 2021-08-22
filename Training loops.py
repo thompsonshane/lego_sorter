@@ -1,11 +1,10 @@
 import os
 from random import randrange
-
 import numpy as np
 import tensorflow as tf
 from PIL import Image
 from keras.preprocessing.image import ImageDataGenerator
-from tensorflow.keras import datasets, layers, models
+from tensorflow.keras import layers, models
 
 # Somewhere to store the models
 generated_models = []
@@ -94,6 +93,8 @@ class Model:
         else:
             return 3
 
+    def get_model(self):
+        return self.model
     # Randomly assignes the number of filters for a conv layer
     def choose_filters(self):
         return randrange(self.min_filters, self.max_filters + 1)
@@ -147,9 +148,18 @@ print(y_train.shape)
 # Reminder for the variables passed into models
 # num_classes, num_layers, epochs, activation, min_filters, max_filters, max_kernel, normalisation
 
+for i in range(5):
 
-# Creating the first model:
-model_1 = Model(10, 5, 5, 'relu', 5, 40, 5, 1)
-model_1.create_model()
-print(model_1.__str__())
-model_1.fit_model(x_train, y_train)
+    # Creating the first model:
+    current_model = Model(10, 5, 5, 'relu', 5, 40, 5, 1)
+    current_model.create_model()
+    print(current_model.__str__())
+    current_model.fit_model(x_train, y_train)
+    model_json = current_model.get_model.to_json()
+    with open("models/batch_1/model_" + str(i) + "/model.json", "w") as json_file:
+        json_file.write(model_json)
+    # serialize weights to HDF5
+    current_model.get_model.save_weights("models/batch_1/model_" + str(i) + "/model_weights.h5")
+    print("Saved model_" + str(i) + "to disk")
+
+print("5 models created!")
